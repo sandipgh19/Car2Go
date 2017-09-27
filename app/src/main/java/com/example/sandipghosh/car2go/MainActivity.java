@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 cars = list;
 
                 //Calling a method to show the list
-                //showList();
+                showList();
             }
 
             @Override
@@ -60,5 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 //you can handle the errors here
             }
         });
+    }
+
+    private void showList() {
+
+        ParseJSON pj = new ParseJSON(cars);
+        pj.parseJSON();
+        CustomAdapter ca = new CustomAdapter(this, ParseJSON.name, ParseJSON.interior);
+        //recyclerView.setAdapter(ca);
+        //recyclerView.setAdapter(ca);
     }
 }

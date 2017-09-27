@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by sandipghosh on 27/09/17.
  */
@@ -15,16 +17,16 @@ public class ParseJSON {
 
         private JSONArray users = null;
 
-        private String json;
+        private List<Car> json;
 
-        public ParseJSON(String json){
+        public ParseJSON(List<Car> json){
             this.json = json;
         }
 
         protected void parseJSON(){
             JSONObject jsonObject=null;
             try {
-                jsonObject = new JSONObject(json);
+                jsonObject = new JSONObject(String.valueOf(json));
                 users = jsonObject.getJSONArray(Config.JSON_ARRAY);
 
                 name = new String[users.length()];
