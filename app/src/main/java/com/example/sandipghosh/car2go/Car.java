@@ -1,5 +1,8 @@
 package com.example.sandipghosh.car2go;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by sandipghosh on 27/09/17.
  */
@@ -8,7 +11,12 @@ public class Car {
 
     private String address;
     private String coordinates;
+    @SerializedName("name")
+    @Expose
     private String name;
+
+    @SerializedName("interior")
+    @Expose
     private String interior;
 
     public String getAddress() {
