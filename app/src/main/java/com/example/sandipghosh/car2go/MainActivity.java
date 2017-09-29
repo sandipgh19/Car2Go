@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,7 +13,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showData(){
-        adapter = new CustomAdapter(this,Config.name,Config.interior);
+        adapter = new CustomAdapter(this,Config.name,Config.interior, Config.address, Config.engineType, Config.exterior, Config.fuel, Config.vin, Config.coordinates);
         recyclerView.setAdapter(adapter);
     }
 
@@ -104,9 +101,14 @@ public class MainActivity extends AppCompatActivity {
                 Config.name[i] = getName(j);
                 Config.interior[i] = getinterior(j);
                 //JSONArray ja = j.getJSONArray("coordinates");
-                Config.coordinates[i] = String.valueOf(j.getJSONArray("coordinates"));
+                Config.coordinates[i] = String.valueOf(j.getJSONArray(Config.coordinates_key));
+                Config.address[i] = getAddress(j);
+                Config.exterior[i] = getexterior(j);
+                Config.vin[i] = getvin(j);
+                Config.engineType[i] = getengineType(j);
+                Config.fuel[i] = getfuel(j);
 
-                Log.i("response123coor", Config.coordinates[i].split(",")[0]);
+
 
 
             }
@@ -141,13 +143,53 @@ public class MainActivity extends AppCompatActivity {
         return interior;
     }
 
-    private String getcoordinates(JSONObject j){
-        String coordinates = null;
+    private String getAddress(JSONObject j){
+        String address = null;
         try {
-            coordinates = j.getString(Config.coordinates_key);
+            address = j.getString(Config.address_key);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return coordinates;
+        return address;
+    }
+
+    private String getengineType(JSONObject j){
+        String engineType = null;
+        try {
+            engineType = j.getString(Config.engineType_key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return engineType;
+    }
+
+    private String getexterior(JSONObject j){
+        String exterior = null;
+        try {
+            exterior = j.getString(Config.exterior_key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return exterior;
+    }
+
+    private String getfuel(JSONObject j){
+        String fuel = null;
+        try {
+            fuel = j.getString(Config.fuel_key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return fuel;
+    }
+
+    private String getvin(JSONObject j){
+        String vin = null;
+        try {
+            vin = j.getString(Config.vin_key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return vin;
     }
 }

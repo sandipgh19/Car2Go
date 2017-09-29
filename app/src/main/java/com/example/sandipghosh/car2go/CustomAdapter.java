@@ -2,11 +2,13 @@ package com.example.sandipghosh.car2go;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
 
 
 
-    public CustomAdapter(Context context, String[] name, String[] interior) {
+    public CustomAdapter(Context context, String[] name, String[] interior, String[] address, String[] engineType, String[] exterior, String[] fuel, String[] vin, String[] coordinates ) {
         super();
         items = new ArrayList<Car>();
         this.context = context;
@@ -30,6 +32,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
             Car item = new Car();
             item.setName(name[i]);
             item.setInterior(interior[i]);
+            item.setAddress(address[i]);
+            item.setEngineType(engineType[i]);
+            item.setExterior(exterior[i]);
+            item.setFuel(fuel[i]);
+            item.setVin(vin[i]);
+            item.setCoordinates(coordinates[i]);
             items.add(item);
         }
     }
@@ -44,10 +52,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
-        Car list = items.get(position);
-        holder.name.setText(list.getName());
-        holder.interior.setText(list.getInterior());
+    public void onBindViewHolder(MyHolder holder, final int position) {
+        final Car list = items.get(position);
+        holder.name.setText("Name: "+list.getName());
+        holder.address.setText("Address: "+list.getAddress());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetailsView.class);
+                intent.putExtra("coordinates", list.getCoordinates());
+                intent.putExtra("engine", list.getEngineType());
+                intent.putExtra("fuel", list.getFuel());
+                intent.putExtra("vin",list.getVin());
+                intent.putExtra("address",list.getAddress());
+                intent.putExtra("extarior",list.getExterior());
+                intent.putExtra("interior",list.getInterior());
+                intent.putExtra("name",list.getName());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
@@ -60,13 +84,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
     class MyHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView interior;
+        TextView address;
 
 
         public MyHolder(View itemView) {
             super(itemView);
 
             name = (TextView) itemView.findViewById(R.id.name);
-            interior = (TextView) itemView.findViewById(R.id.interior);
+            address = (TextView) itemView.findViewById(R.id.address);
         }
 
 
