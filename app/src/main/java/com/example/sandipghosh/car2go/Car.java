@@ -11,12 +11,9 @@ public class Car {
 
     private String address;
     private String coordinates;
-    @SerializedName("name")
-    @Expose
+
     private String name;
 
-    @SerializedName("interior")
-    @Expose
     private String interior;
 
     public String getAddress() {
