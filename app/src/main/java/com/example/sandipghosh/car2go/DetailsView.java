@@ -23,7 +23,7 @@ public class DetailsView extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    TextView coordinatestxt, enginetxt, fueltxt, vintxt,nametxt, extraiortxt, interiortxt;
+    TextView enginetxt, fueltxt, vintxt,nametxt, extraiortxt, interiortxt;
 
     String address;
     LatLng latLng;

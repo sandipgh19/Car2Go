@@ -1,11 +1,15 @@
 package com.example.sandipghosh.car2go;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private CustomAdapter adapter;
     private Config config;
     private RecyclerView.LayoutManager layoutManager;
+    Timer timer;
 
 
     @Override
@@ -37,7 +44,37 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        getData();
+        if(isNetworkAvailable()) {
+
+            getData();
+
+        } else {
+
+            Toast.makeText(this,"Please Check your Internet Connection", Toast.LENGTH_LONG).show();
+        }
+
+
+        timer  = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(isNetworkAvailable()) {
+
+                            getData();
+
+                        } else {
+
+                            Toast.makeText(MainActivity.this,"Please Check your Internet Connection", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        }, 0, 30000);
+
+
     }
 
 
@@ -108,17 +145,12 @@ public class MainActivity extends AppCompatActivity {
                 Config.engineType[i] = getengineType(j);
                 Config.fuel[i] = getfuel(j);
 
-
-
-
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
 
         }
-
-
         showData();
 
     }
@@ -191,5 +223,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return vin;
+    }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

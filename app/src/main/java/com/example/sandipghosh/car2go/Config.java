@@ -1,6 +1,5 @@
 package com.example.sandipghosh.car2go;
 
-import java.lang.reflect.Array;
 
 /**
  * Created by sandipghosh on 27/09/17.
